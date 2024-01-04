@@ -79,7 +79,7 @@ h1 {
   cursor: pointer;
 }
 
-.gallery .container .video-all .video video:hover,
+
 .gallery .container .video-all .image img:hover  {
   transition: 0.2s linear;
   transform: scale(1.3);

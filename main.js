@@ -22,30 +22,65 @@ const onScroll = () => {
 document.addEventListener("scroll", onScroll);
 
 // gallery
+let activeVideo = null;
+let activeImage = null;
+
 const videos = document.querySelectorAll('.video video');
 const images = document.querySelectorAll('.image img');
 
 videos.forEach(video => {
   video.addEventListener('click', () => {
-    if (video.paused) {
-      video.classList.add('active');
-      video.play();
+    if (activeImage !== null) {
+      activeImage.classList.remove('active');
+      activeImage = null;
+    }
+
+    videos.forEach(v => {
+      if (v !== video) {
+        v.pause();
+        v.currentTime = 0; // Reinicia o vídeo para a posição inicial ao "fechar"
+        v.classList.remove('active');
+      }
+    });
+
+    if (video !== activeVideo) {
+      if (activeVideo !== null) {
+        activeVideo.pause();
+        activeVideo.currentTime = 0; // Reinicia para o início
+        activeVideo.classList.remove('active');
+      }
+      activeVideo = video;
+      activeVideo.classList.add('active');
+      activeVideo.controls = true;
+      activeVideo.play();
     } else {
-      video.classList.remove('active');
-      video.pause();
+      if (!activeVideo.paused) {
+        activeVideo.pause();
+      }
+      activeVideo.currentTime = 0; // Reinicia para o início
+      activeVideo.classList.remove('active');
+      activeVideo.removeAttribute('controls'); // Remove os controles do vídeo
+      activeVideo = null;
     }
   });
 
   video.addEventListener('mouseenter', () => {
     if (video.classList.contains('active')) {
+      video.controls = true;
       video.muted = false;
+      video.play();
     }
   });
 
   video.addEventListener('mouseleave', () => {
-    if (video.classList.contains('active')) {
+    if (video.classList.contains('active') && video.paused) {
+      video.controls = false;
       video.muted = true;
     }
+  });
+
+  video.addEventListener('ended', () => {
+    video.currentTime = 0; // Reinicia o vídeo para a posição inicial ao terminar de reproduzir
   });
 
   video.setAttribute('loop', true);
@@ -53,6 +88,18 @@ videos.forEach(video => {
 
 images.forEach(image => {
   image.addEventListener('click', () => {
+    if (activeVideo !== null) {
+      activeVideo.classList.remove('active');
+      activeVideo.pause();
+      activeVideo.currentTime = 0; // Reinicia o vídeo para a posição inicial ao "fechar"
+      activeVideo = null;
+    }
+
+    if (image !== activeImage && activeImage !== null) {
+      activeImage.classList.remove('active');
+    }
+
     image.classList.toggle('active');
+    activeImage = image;
   });
 });
