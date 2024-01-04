@@ -47,6 +47,8 @@ videos.forEach(video => {
       video.muted = true;
     }
   });
+
+  video.setAttribute('loop', true);
 });
 
 images.forEach(image => {

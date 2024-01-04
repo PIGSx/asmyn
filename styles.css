@@ -102,7 +102,7 @@ h1 {
   left: 50%;
   transform: translate(-50%, -50%);
   height: auto;
-  width: 30%;
+  width: 80%;
   box-shadow: 0 0 0 100vh var(--shadow);
   z-index: 1;
 }
@@ -111,4 +111,15 @@ h1 {
 .gallery .container .video-all .image .active:hover {
   transition: none;
   transform: scale(1) translate(-50%, -50%);
+}
+
+@media screen and (min-width: 1000px){
+  .gallery .container .video-all .video video.active {
+    width: 25%;
+  }
+  
+  .gallery .container .video-all .image .active {
+    width: 25%;
+  }
+
 }
