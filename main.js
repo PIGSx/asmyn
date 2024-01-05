@@ -91,7 +91,7 @@ images.forEach(image => {
     if (activeVideo !== null) {
       activeVideo.classList.remove('active');
       activeVideo.pause();
-      activeVideo.currentTime = 0; // Reinicia o vídeo para a posição inicial ao "fechar"
+      activeVideo.currentTime = 0; // Reinicia o vídeo para a posição inicial
       activeVideo = null;
     }
 
@@ -104,31 +104,29 @@ images.forEach(image => {
   });
 });
 
+// sair do video 
+const videoContainers = document.querySelectorAll('.gallery .video');
 
-const videoContainers = document.querySelectorAll('.video-container');
-
-// Função para fechar o vídeo se clicar/toque fora
+// Função para fechar o vídeo e mostrar a imagem correspondente
 function closeVideoIfClickedOutside(event) {
-  let isClickedOutside = true;
+  const clickedVideoContainer = event.target.closest('.video');
 
-  videoContainers.forEach(container => {
-    if (container.contains(event.target)) {
-      isClickedOutside = false;
-    }
-  });
-
-  if (isClickedOutside) {
+  if (!clickedVideoContainer) {
     videoContainers.forEach(container => {
-      const video = container.querySelector('.video-element');
+      const video = container.querySelector('video');
+      const image = container.previousElementSibling;
+
       if (video && !video.paused) {
         video.pause();
         video.currentTime = 0; // Reinicia para o início
         video.classList.remove('active');
+
+        // Mostra a imagem associada ao vídeo
+        image.style.display = 'block';
       }
     });
   }
 }
 
-// Adiciona um ouvinte de clique/toque no documento inteiro
+// Adiciona um ouvinte de clique no documento inteiro
 document.addEventListener('click', closeVideoIfClickedOutside);
-document.addEventListener('touchstart', closeVideoIfClickedOutside);
