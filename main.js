@@ -103,3 +103,32 @@ images.forEach(image => {
     activeImage = image;
   });
 });
+
+
+const videoContainers = document.querySelectorAll('.video-container');
+
+// Função para fechar o vídeo se clicar/toque fora
+function closeVideoIfClickedOutside(event) {
+  let isClickedOutside = true;
+
+  videoContainers.forEach(container => {
+    if (container.contains(event.target)) {
+      isClickedOutside = false;
+    }
+  });
+
+  if (isClickedOutside) {
+    videoContainers.forEach(container => {
+      const video = container.querySelector('.video-element');
+      if (video && !video.paused) {
+        video.pause();
+        video.currentTime = 0; // Reinicia para o início
+        video.classList.remove('active');
+      }
+    });
+  }
+}
+
+// Adiciona um ouvinte de clique/toque no documento inteiro
+document.addEventListener('click', closeVideoIfClickedOutside);
+document.addEventListener('touchstart', closeVideoIfClickedOutside);
