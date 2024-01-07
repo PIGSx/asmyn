@@ -125,8 +125,21 @@ function closeVideoIfClickedOutside(event) {
         image.style.display = 'block';
       }
     });
+  } else {
+    const video = clickedVideoContainer.querySelector('video');
+
+    if (video && !video.classList.contains('active')) {
+      videos.forEach(v => {
+        v.pause();
+        v.currentTime = 0;
+        v.classList.remove('active');
+      });
+
+      video.classList.add('active');
+      video.play();
+    }
   }
 }
 
-// Adiciona um ouvinte de clique no documento inteiro
 document.addEventListener('click', closeVideoIfClickedOutside);
+document.addEventListener('touchstart', closeVideoIfClickedOutside);
